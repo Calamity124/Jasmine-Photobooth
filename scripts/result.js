@@ -35,7 +35,7 @@ if (savedPhotos.length > 0) {
     stripImagesContainer.innerHTML = '<p style="font-size:12px; text-align:center; padding: 20px 0;">No photos found!</p>';
 }
 
-// 4. Check for Messenger IMMEDIATELY on load to show the warning tip (requires the HTML from previous step)
+// 4. Check for Messenger IMMEDIATELY on load to show the warning banner tip
 const ua = navigator.userAgent || navigator.vendor || window.opera;
 const isMessenger = /FBAN|FBAV|Messenger/i.test(ua);
 
@@ -64,11 +64,10 @@ downloadBtn.addEventListener('click', () => {
         const imageUrl = canvas.toDataURL('image/jpeg', 1.0);
         
         if (isMessenger) {
-            // ONLY if they are inside Messenger, show the overlay
+            // Show overlay with instructions on how to open in browser / save
             showSaveOverlay(imageUrl);
         } else {
-            // For ALL OTHER BROWSERS (Desktop, Mobile Safari, Mobile Chrome)
-            // Force a direct download straight to their device/album
+            // Normal browsers download directly to device
             const link = document.createElement('a');
             link.href = imageUrl;
             link.download = 'enimsaj-photobooth-strip.jpg';
@@ -85,7 +84,7 @@ downloadBtn.addEventListener('click', () => {
     });
 });
 
-// Helper function to show a friendly save overlay ONLY for Messenger
+// Helper function to show a friendly save overlay with the "three dots" tip for Messenger users
 function showSaveOverlay(imageUrl) {
     const existing = document.getElementById('messenger-save-overlay');
     if (existing) existing.remove();
@@ -107,10 +106,13 @@ function showSaveOverlay(imageUrl) {
 
     overlay.innerHTML = `
         <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; max-width: 320px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-            <h3 style="color: #3E312C; font-size: 16px; margin-bottom: 8px;">Save Your Photo Strip ♡</h3>
-            <p style="color: #8c7b75; font-size: 12px; margin-bottom: 15px;">Messenger blocks automatic downloads. <b>Press & hold</b> the image below, then choose <b>"Save Image"</b>.</p>
-            <img src="${imageUrl}" style="width: 100%; max-height: 350px; object-fit: contain; border-radius: 6px; border: 1px solid #EADCD6; margin-bottom: 15px;" />
-            <button id="close-overlay-btn" style="background: #C46D70; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;">Done / Close</button>
+            <h3 style="color: #3E312C; font-size: 15px; margin-bottom: 8px;">Can't save inside Messenger? 💡</h3>
+            <p style="color: #8c7b75; font-size: 11px; margin-bottom: 12px; line-height: 1.4;">
+                Tap the <b>three dots (...)</b> in your top corner and choose <b>"Open in Browser"</b> (Chrome/Safari) so you can download straight to your album!
+            </p>
+            <div style="font-size: 10px; color: #a67c7b; margin-bottom: 8px;">Or try holding the image below:</div>
+            <img src="${imageUrl}" style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 6px; border: 1px solid #EADCD6; margin-bottom: 15px;" />
+            <button id="close-overlay-btn" style="background: #C46D70; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;">Close</button>
         </div>
     `;
 
