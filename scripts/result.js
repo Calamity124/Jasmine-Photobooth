@@ -47,35 +47,73 @@ printBtn.addEventListener('click', () => {
     window.print();
 });
 
-// 6. Direct Mobile Blob Download Functionality
+// 6. Robust Download Functionality (Messenger & Mobile Safe)
 downloadBtn.addEventListener('click', () => {
-    downloadBtn.innerText = "Downloading...";
+    downloadBtn.innerText = "Generating...";
     
     html2canvas(photoStrip, { scale: 2, useCORS: true }).then(canvas => {
-        canvas.toBlob((blob) => {
-            // Create a safe object URL for the blob
-            const blobUrl = URL.createObjectURL(blob);
-            
+        const imageUrl = canvas.toDataURL('image/jpeg', 1.0);
+        
+        // Check if user is on mobile or inside Facebook/Messenger in-app browser
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isMessenger = /FBAN|FBAV|Messenger/i.test(ua);
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
+
+        if (isMessenger || isMobile) {
+            // Messenger blocks direct downloads, so we display a clean pop-up overlay 
+            // where they can long-press / hold to save to their phone gallery.
+            showSaveOverlay(imageUrl);
+        } else {
+            // Standard desktop direct download
             const link = document.createElement('a');
-            link.href = blobUrl;
+            link.href = imageUrl;
             link.download = 'enimsaj-photobooth-strip.jpg';
-            
-            // Required for mobile Firefox/Chrome to trigger file download
             document.body.appendChild(link);
             link.click();
-            
-            // Clean up the URL object after download triggers
-            setTimeout(() => {
-                document.body.removeChild(link);
-                window.URL.revokeObjectURL(blobUrl);
-            }, 100);
-            
-            downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
-        }, 'image/jpeg', 1.0);
+            document.body.removeChild(link);
+        }
         
+        downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
     }).catch(err => {
         console.error("Error saving image: ", err);
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
-        alert("Failed to download image.");
+        alert("Failed to generate image.");
     });
 });
+
+// Helper function to show a friendly save overlay for Messenger/Mobile
+function showSaveOverlay(imageUrl) {
+    // Remove any existing overlay if present
+    const existing = document.getElementById('messenger-save-overlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'messenger-save-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+        font-family: 'Montserrat', sans-serif;
+    `;
+
+    overlay.innerHTML = `
+        <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; max-width: 320px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+            <h3 style="color: #3E312C; font-size: 16px; margin-bottom: 8px;">Save Your Photo Strip ♡</h3>
+            <p style="color: #8c7b75; font-size: 12px; margin-bottom: 15px;">Press & hold the image below, then choose <b>"Save Image"</b>.</p>
+            <img src="${imageUrl}" style="width: 100%; max-height: 350px; object-fit: contain; border-radius: 6px; border: 1px solid #EADCD6; margin-bottom: 15px;" />
+            <button id="close-overlay-btn" style="background: #C46D70; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;">Done / Close</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById('close-overlay-btn').addEventListener('click', () => {
+        overlay.remove();
+    });
+}
