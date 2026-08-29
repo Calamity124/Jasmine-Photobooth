@@ -13,7 +13,18 @@
 </head>
 
 <body id="landing-page-body">
-
+    <script>
+    
+    var ua = navigator.userAgent || navigator.vendor || window.opera;
+    if (/FBAN|FBAV|Messenger/i.test(ua)) {
+        window.addEventListener('DOMContentLoaded', () => {
+            const banner = document.createElement('div');
+            banner.style.cssText = "background:#3E312C; color:white; padding:12px; text-align:center; font-family:Montserrat,sans-serif; font-size:12px; position:fixed; top:0; left:0; width:100%; z-index:99999; box-shadow:0 2px 5px rgba(0,0,0,0.2);";
+            banner.innerHTML = `⚠️ <b>Please open in Chrome or Safari!</b> Tap the <b>three dots (...)</b> above and select "Open in Browser" to take photos and save properly.`;
+            document.body.prepend(banner);
+        });
+    }
+</script>
     <main id="landing-page">
         <h1 class="title-header">Enimsaj's</h1>
         <h2 class="title-header-2">PhotoBooth</h2>
