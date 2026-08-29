@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoBooth - Choose Your Mood</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Pacifico&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles/mood.css">
+</head>
+
+<body>
+
+    <main class="booth-container">
+
+        <h1 class="booth-title">Choose Your Mood</h1>
+        <p class="booth-subtitle">Pick the vibe for your memories. ♡</p>
+
+        <div class="polaroid-frame">
+            <div id="camera-preview" class="mood-normal">
+                <video id="video-feed" autoplay playsinline></video>
+            </div>
+        </div>
+
+        <div class="mood-grid">
+
+            <div class="mood-card active" data-mood="mood-normal">
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+                <img src="https://i.pravatar.cc/200?img=47" alt="Normal Preview">
+                <p>Normal</p>
+            </div>
+
+            <div class="mood-card" data-mood="mood-dreamy">
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+                <img src="https://i.pravatar.cc/200?img=44" alt="Dreamy Preview">
+                <p>Dreamy</p>
+            </div>
+
+            <div class="mood-card" data-mood="mood-retro">
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+                <img src="https://i.pravatar.cc/200?img=32" alt="Retro Preview">
+                <p>Retro</p>
+            </div>
+
+            <div class="mood-card" data-mood="mood-midnight">
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+                <img src="https://i.pravatar.cc/200?img=33" alt="Midnight Preview">
+                <p>Midnight</p>
+            </div>
+
+        </div>
+        <a href="captures.html" class="next-btn" id="next-btn">
+            NEXT <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        </div>
+
+    </main>
+
+    <script src="/scripts/photobooth.js"></script>
+</body>
+
+</html>

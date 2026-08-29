@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F5EFEB;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    font-family: "Montserrat", sans-serif;
+    color: #3E312C;
+}
+
+.booth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100vw;
+    padding: 30px 15px;
+    overflow-x: hidden;
+}
+
+.booth-title {
+    font-family: "Pacifico", cursive;
+    font-size: 32px;
+    margin-bottom: 5px;
+    color: #3E312C;
+    text-align: center;
+    width: 100%;
+}
+
+.booth-subtitle {
+    font-size: 14px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.polaroid-frame {
+    background: white;
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 12px 30px 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+#camera-preview {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background-color: #3E312C;
+    overflow: hidden;
+    position: relative;
+    border-radius: 4px;
+}
+
+#video-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+    transition: filter 0.3s ease;
+}
+
+#countdown-overlay {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+#flash-overlay {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background-color: white;
+    z-index: 20;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.layout-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.layout-btn {
+    padding: 12px 24px;
+    border: 2px solid #C46D70;
+    background-color: transparent;
+    color: #C46D70;
+    border-radius: 30px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.layout-btn.active {
+    background-color: #C46D70;
+    color: white;
+}
+
+
+.capture-btn {
+    background-color: #3E312C;
+    color: white;
+    border: none;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+}
+
+.capture-btn:hover {
+    transform: scale(1.05);
+}
+
+.capture-btn i { 
+    font-size: 24px; 
+}
+
+
+.mood-normal video { filter: none; }
+.mood-dreamy video { filter: brightness(1.1) saturate(1.3) hue-rotate(15deg); }
+.mood-retro video { filter: sepia(0.6) contrast(1.1) brightness(0.9); }
+.mood-midnight video { filter: grayscale(0.5) contrast(1.2) brightness(0.7) hue-rotate(200deg); }

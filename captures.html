@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoBooth - Capture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles/captures.css">
+</head>
+<body>
+
+    <main class="booth-container">
+        
+        <h1 class="booth-title">Ready?</h1>
+        <p class="booth-subtitle">Select your layout and strike a pose. ♡</p>
+
+        <div class="polaroid-frame">
+            <div id="camera-preview">
+                <video id="video-feed" autoplay playsinline></video>
+                <div id="countdown-overlay" class="hidden"></div>
+                <div id="flash-overlay" class="hidden"></div>
+            </div>
+        </div>
+
+        <canvas id="capture-canvas" class="hidden"></canvas>
+
+        <div class="layout-selector">
+            <button class="layout-btn active" data-takes="3">3 Takes</button>
+            <button class="layout-btn" data-takes="4">4 Takes</button>
+        </div>
+
+        <button class="capture-btn" id="start-capture">
+            <i class="fa-solid fa-camera"></i> START
+        </button>
+
+    </main>
+
+    <script src="/scripts/captures.js"></script>
+</body>
+</html>

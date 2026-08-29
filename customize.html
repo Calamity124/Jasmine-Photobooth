@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoBooth - Customize Strip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles/customize.css">
+</head>
+<body>
+
+    <main class="booth-container">
+        
+        <h1 class="booth-title">Customize</h1>
+        <p class="booth-subtitle">Add your personal touch! ♡</p>
+
+      
+        <div class="photo-strip design-classic" id="photo-strip">
+            <div class="strip-header-area">
+                <div class="strip-header" id="strip-title-preview">Enimsaj's PhotoBooth</div>
+            </div>
+            
+            <div class="strip-images" id="strip-images-container"></div>
+            
+            <div class="strip-footer-area">
+                <div class="strip-footer">
+                    <span id="strip-caption-preview">Memories ♡</span>
+                    <span id="strip-date-preview">2026.08.29</span>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="customization-form">
+            <div class="form-group">
+                <label>Header Title</label>
+                <input type="text" id="input-title" value="Enimsaj's PhotoBooth" maxlength="25">
+            </div>
+
+            <div class="form-group">
+                <label>Caption / Message</label>
+                <input type="text" id="input-caption" value="Memories ♡" maxlength="30">
+            </div>
+
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text" id="input-date" value="2026.08.29">
+            </div>
+
+           
+            <div class="form-group">
+                <label>Strip Layout Style</label>
+                <div class="design-picker">
+                    <button type="button" class="design-btn active" data-design="design-classic">Classic</button>
+                    <button type="button" class="design-btn" data-design="design-film">Film Frame</button>
+                    <button type="button" class="design-btn" data-design="design-rounded">Soft Rounded</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Template Border Color</label>
+                <div class="color-picker">
+                    <button class="color-btn active" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ccc;"></button>
+                    <button class="color-btn" data-color="#FCE5CD" style="background: #FCE5CD;"></button>
+                    <button class="color-btn" data-color="#EAD1DC" style="background: #EAD1DC;"></button>
+                    <button class="color-btn" data-color="#D9EAD3" style="background: #D9EAD3;"></button>
+                </div>
+            </div>
+        </div>
+
+        <button class="action-btn next-btn" id="finish-btn">
+            DONE <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+    </main>
+
+    <script src="/scripts/customize.js"></script>
+</body>
+</html>

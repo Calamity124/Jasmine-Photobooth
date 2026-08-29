@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoBooth - Your Strip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles/result.css">
+</head>
+<body>
+
+    <main class="booth-container">
+        
+        <h1 class="booth-title">Your Memories</h1>
+        <p class="booth-subtitle">Here is your custom photo strip! ♡</p>
+
+        
+        <div class="photo-strip design-classic" id="photo-strip">
+            <div class="strip-header-area">
+                <div class="strip-header" id="strip-title-preview">Enimsaj's PhotoBooth</div>
+            </div>
+            
+            <div class="strip-images" id="strip-images-container">
+                
+            </div>
+            
+            <div class="strip-footer-area">
+                <div class="strip-footer">
+                    <span id="strip-caption-preview">Memories ♡</span>
+                    <span id="strip-date-preview">2026.08.29</span>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="action-buttons">
+            <a href="mood.html" class="action-btn retry-btn" id="retake-btn">
+                <i class="fa-solid fa-rotate-left"></i> Retake
+            </a>
+            <button class="action-btn print-btn" id="print-btn">
+                <i class="fa-solid fa-print"></i> Print
+            </button>
+            <button class="action-btn download-btn" id="download-btn">
+                <i class="fa-solid fa-download"></i> Save
+            </button>
+        </div>
+
+    </main>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="/scripts/result.js"></script>
+</body>
+</html>
