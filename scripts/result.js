@@ -35,36 +35,40 @@ if (savedPhotos.length > 0) {
     stripImagesContainer.innerHTML = '<p style="font-size:12px; text-align:center; padding: 20px 0;">No photos found!</p>';
 }
 
-// 4. Retake Button: Clear session data and go back to start
+// 4. Check for Messenger IMMEDIATELY on load to show the warning tip (requires the HTML from previous step)
+const ua = navigator.userAgent || navigator.vendor || window.opera;
+const isMessenger = /FBAN|FBAV|Messenger/i.test(ua);
+
+if (isMessenger) {
+    const tip = document.getElementById('messenger-tip');
+    if (tip) tip.style.display = 'block';
+}
+
+// 5. Retake Button: Clear session data and go back to start
 retakeBtn.addEventListener('click', () => {
     localStorage.removeItem('capturedPhotos');
     localStorage.removeItem('selectedMood');
     localStorage.removeItem('stripCustomization');
 });
 
-// 5. Print Button: Triggers native print dialog
+// 6. Print Button: Triggers native print dialog
 printBtn.addEventListener('click', () => {
     window.print();
 });
 
-// 6. Robust Download Functionality (Messenger & Mobile Safe)
+// 7. Robust Download Functionality
 downloadBtn.addEventListener('click', () => {
     downloadBtn.innerText = "Generating...";
     
     html2canvas(photoStrip, { scale: 2, useCORS: true }).then(canvas => {
         const imageUrl = canvas.toDataURL('image/jpeg', 1.0);
         
-        // Check if user is on mobile or inside Facebook/Messenger in-app browser
-        const ua = navigator.userAgent || navigator.vendor || window.opera;
-        const isMessenger = /FBAN|FBAV|Messenger/i.test(ua);
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
-
-        if (isMessenger || isMobile) {
-            // Messenger blocks direct downloads, so we display a clean pop-up overlay 
-            // where they can long-press / hold to save to their phone gallery.
+        if (isMessenger) {
+            // ONLY if they are inside Messenger, show the overlay
             showSaveOverlay(imageUrl);
         } else {
-            // Standard desktop direct download
+            // For ALL OTHER BROWSERS (Desktop, Mobile Safari, Mobile Chrome)
+            // Force a direct download straight to their device/album
             const link = document.createElement('a');
             link.href = imageUrl;
             link.download = 'enimsaj-photobooth-strip.jpg';
@@ -81,9 +85,8 @@ downloadBtn.addEventListener('click', () => {
     });
 });
 
-// Helper function to show a friendly save overlay for Messenger/Mobile
+// Helper function to show a friendly save overlay ONLY for Messenger
 function showSaveOverlay(imageUrl) {
-    // Remove any existing overlay if present
     const existing = document.getElementById('messenger-save-overlay');
     if (existing) existing.remove();
 
@@ -105,7 +108,7 @@ function showSaveOverlay(imageUrl) {
     overlay.innerHTML = `
         <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; max-width: 320px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
             <h3 style="color: #3E312C; font-size: 16px; margin-bottom: 8px;">Save Your Photo Strip ♡</h3>
-            <p style="color: #8c7b75; font-size: 12px; margin-bottom: 15px;">Press & hold the image below, then choose <b>"Save Image"</b>.</p>
+            <p style="color: #8c7b75; font-size: 12px; margin-bottom: 15px;">Messenger blocks automatic downloads. <b>Press & hold</b> the image below, then choose <b>"Save Image"</b>.</p>
             <img src="${imageUrl}" style="width: 100%; max-height: 350px; object-fit: contain; border-radius: 6px; border: 1px solid #EADCD6; margin-bottom: 15px;" />
             <button id="close-overlay-btn" style="background: #C46D70; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;">Done / Close</button>
         </div>
