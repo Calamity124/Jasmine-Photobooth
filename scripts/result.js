@@ -4,24 +4,33 @@ const downloadBtn = document.getElementById('download-btn');
 const printBtn = document.getElementById('print-btn');
 const retakeBtn = document.getElementById('retake-btn');
 
-// 1. Load custom data from localStorage
+// 1. Automatically generate TODAY'S real-time date (Format: YYYY.MM.DD)
+const today = new Date();
+const currentYear = today.getFullYear();
+const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
+const currentDay = String(today.getDate()).padStart(2, '0');
+const todaysFormattedDate = `${currentYear}.${currentMonth}.${currentDay}`;
+
+// 2. Load custom data from localStorage (automatically applies today's date)
 const customData = JSON.parse(localStorage.getItem('stripCustomization')) || {
     title: "Enimsaj's PhotoBooth",
     caption: "Memories ♡",
-    date: "2026.08.29",
+    date: todaysFormattedDate,
     bgColor: "#ffffff",
     design: "design-classic"
 };
 
-// 2. Apply background color, design class, and custom text fields safely
+// 3. Apply background color, design class, and custom text fields safely
 photoStrip.style.backgroundColor = customData.bgColor;
 photoStrip.className = `photo-strip ${customData.design}`;
 
 document.getElementById('strip-title-preview').textContent = customData.title;
 document.getElementById('strip-caption-preview').textContent = customData.caption;
-document.getElementById('strip-date-preview').textContent = customData.date;
 
-// 3. Load captured photos
+// Forces the date preview to always display today's actual live date
+document.getElementById('strip-date-preview').textContent = todaysFormattedDate;
+
+// 4. Load captured photos
 const savedPhotos = JSON.parse(localStorage.getItem('capturedPhotos')) || [];
 
 if (savedPhotos.length > 0) {
@@ -35,7 +44,7 @@ if (savedPhotos.length > 0) {
         imgDiv.style.width = '100%';
         imgDiv.style.height = 'auto'; 
         
-        // 👇 THIS MATCHES THE 2ND IMAGE EXACTLY (Wide/Landscape photos)
+        // Matches your target wide/landscape proportions perfectly
         imgDiv.style.aspectRatio = '4/3'; 
         
         imgDiv.style.marginBottom = '12px'; 
@@ -47,7 +56,7 @@ if (savedPhotos.length > 0) {
     stripImagesContainer.innerHTML = '<p style="font-size:12px; text-align:center; padding: 20px 0;">No photos found!</p>';
 }
 
-// 4. Check for Messenger IMMEDIATELY on load to show the warning banner tip
+// 5. Check for Messenger IMMEDIATELY on load to show the warning banner tip
 const ua = navigator.userAgent || navigator.vendor || window.opera;
 const isMessenger = /FBAN|FBAV|Messenger/i.test(ua);
 
@@ -56,29 +65,29 @@ if (isMessenger) {
     if (tip) tip.style.display = 'block';
 }
 
-// 5. Retake Button: Clear session data and go back to start
+// 6. Retake Button: Clear session data and go back to start
 retakeBtn.addEventListener('click', () => {
     localStorage.removeItem('capturedPhotos');
     localStorage.removeItem('selectedMood');
     localStorage.removeItem('stripCustomization');
 });
 
-// 6. Print Button: Triggers native print dialog
+// 7. Print Button: Triggers native print dialog
 printBtn.addEventListener('click', () => {
     window.print();
 });
 
-// 7. Robust Download Functionality
+// 8. Robust Download Functionality
 downloadBtn.addEventListener('click', () => {
     downloadBtn.innerText = "Generating...";
     
-    // 👇 Locks width to guarantee the text size and photo size match the 2nd image perfectly
+    // Locks width to guarantee text and photo proportions match perfectly during download
     const originalWidth = photoStrip.style.width;
     photoStrip.style.width = "320px"; 
     photoStrip.style.maxWidth = "none";
     
     html2canvas(photoStrip, { 
-        scale: 5, // 👇 Ultra HD resolution
+        scale: 5, // Ultra HD resolution
         useCORS: true,
         allowTaint: true,
         logging: false 
@@ -88,7 +97,7 @@ downloadBtn.addEventListener('click', () => {
         photoStrip.style.width = originalWidth;
         photoStrip.style.maxWidth = "";
         
-        // 👇 Changed to PNG for perfect lossless quality (NO MORE BLUR)
+        // Uses PNG for crystal clear, lossless quality
         const imageUrl = canvas.toDataURL('image/png');
         
         if (isMessenger) {
@@ -96,7 +105,7 @@ downloadBtn.addEventListener('click', () => {
         } else {
             const link = document.createElement('a');
             link.href = imageUrl;
-            link.download = 'enimsaj-photobooth-strip.png'; // Updated to .png
+            link.download = 'enimsaj-photobooth-strip.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
