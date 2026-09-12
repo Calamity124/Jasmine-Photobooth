@@ -33,12 +33,12 @@ if (savedPhotos.length > 0) {
         imgDiv.style.backgroundPosition = 'center';
         
         imgDiv.style.width = '100%';
-        imgDiv.style.height = 'auto'; // Remove the fixed 180px height
+        imgDiv.style.height = 'auto'; 
         
-        // 👇 THIS IS THE FIX: '4/3' creates landscape (wide) photos perfectly matching your target
-        imgDiv.style.aspectRatio = '4/3'; 
+        // 👇 FIX 1: '1/1' makes it a perfect square. No more stretching!
+        imgDiv.style.aspectRatio = '1/1'; 
         
-        imgDiv.style.marginBottom = '12px'; // slightly increased spacing
+        imgDiv.style.marginBottom = '12px'; 
         imgDiv.style.borderRadius = '4px';
         
         stripImagesContainer.appendChild(imgDiv);
@@ -72,13 +72,13 @@ printBtn.addEventListener('click', () => {
 downloadBtn.addEventListener('click', () => {
     downloadBtn.innerText = "Generating...";
     
-    // 👇 Lock width to 300px. This guarantees the text and padding proportions are perfect.
+    // Lock width to 300px to keep text proportions perfect.
     const originalWidth = photoStrip.style.width;
     photoStrip.style.width = "300px"; 
     photoStrip.style.maxWidth = "none";
     
     html2canvas(photoStrip, { 
-        scale: 4, // 👈 This scale makes it High-Resolution
+        scale: 5, // 👇 FIX 2: Increased scale for ultra HD
         useCORS: true,
         allowTaint: true,
         logging: false 
@@ -88,14 +88,16 @@ downloadBtn.addEventListener('click', () => {
         photoStrip.style.width = originalWidth;
         photoStrip.style.maxWidth = "";
         
-        const imageUrl = canvas.toDataURL('image/jpeg', 1.0);
+        // 👇 FIX 3: Changed to 'image/png' for lossless, crystal clear quality (removes JPEG blur)
+        const imageUrl = canvas.toDataURL('image/png');
         
         if (isMessenger) {
             showSaveOverlay(imageUrl);
         } else {
             const link = document.createElement('a');
             link.href = imageUrl;
-            link.download = 'enimsaj-photobooth-strip.jpg';
+            // Updated file extension to .png
+            link.download = 'enimsaj-photobooth-strip.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -104,7 +106,7 @@ downloadBtn.addEventListener('click', () => {
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
     }).catch(err => {
         console.error("Error saving image: ", err);
-        photoStrip.style.width = originalWidth; // Restore on error too
+        photoStrip.style.width = originalWidth; 
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
         alert("Failed to generate image.");
     });
