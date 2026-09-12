@@ -120,6 +120,10 @@ body {
     font-size: 10px;
     color: #8C706E;
 }
+#strip-caption-preview {
+    font-size: 13px; 
+    font-weight: 500; 
+}
 
 .action-buttons {
     display: flex;
