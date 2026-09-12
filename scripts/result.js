@@ -27,9 +27,19 @@ const savedPhotos = JSON.parse(localStorage.getItem('capturedPhotos')) || [];
 if (savedPhotos.length > 0) {
     stripImagesContainer.innerHTML = ''; 
     savedPhotos.forEach(photoSrc => {
-        const img = document.createElement('img');
-        img.src = photoSrc;
-        stripImagesContainer.appendChild(img);
+        // Use a div with background-image instead of an <img> tag to prevent html2canvas stretching bugs
+        const imgDiv = document.createElement('div');
+        imgDiv.style.backgroundImage = `url(${photoSrc})`;
+        imgDiv.style.backgroundSize = 'cover';
+        imgDiv.style.backgroundPosition = 'center';
+        imgDiv.style.width = '100%';
+        
+        // Adjust this height to match your CSS design (e.g., 150px, 180px, etc.)
+        imgDiv.style.height = '180px'; 
+        imgDiv.style.marginBottom = '10px'; // Space between photos
+        imgDiv.style.borderRadius = '4px';
+        
+        stripImagesContainer.appendChild(imgDiv);
     });
 } else {
     stripImagesContainer.innerHTML = '<p style="font-size:12px; text-align:center; padding: 20px 0;">No photos found!</p>';
@@ -60,14 +70,22 @@ printBtn.addEventListener('click', () => {
 downloadBtn.addEventListener('click', () => {
     downloadBtn.innerText = "Generating...";
     
-    html2canvas(photoStrip, { scale: 2, useCORS: true }).then(canvas => {
+    // Lock the strip to a fixed physical width right before capture so it doesn't squish on phones
+    const originalWidth = photoStrip.style.width;
+    photoStrip.style.width = "380px"; // Force desktop-like width
+    photoStrip.style.maxWidth = "none";
+    
+    html2canvas(photoStrip, { scale: 3, useCORS: true }).then(canvas => {
+        
+        // Immediately restore the original mobile layout
+        photoStrip.style.width = originalWidth;
+        photoStrip.style.maxWidth = "";
+        
         const imageUrl = canvas.toDataURL('image/jpeg', 1.0);
         
         if (isMessenger) {
-            // Show overlay with instructions on how to open in browser / save
             showSaveOverlay(imageUrl);
         } else {
-            // Normal browsers download directly to device
             const link = document.createElement('a');
             link.href = imageUrl;
             link.download = 'enimsaj-photobooth-strip.jpg';
@@ -79,11 +97,11 @@ downloadBtn.addEventListener('click', () => {
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
     }).catch(err => {
         console.error("Error saving image: ", err);
+        photoStrip.style.width = originalWidth; // Restore on error too
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
         alert("Failed to generate image.");
     });
 });
-
 // Helper function to show a friendly save overlay with the "three dots" tip for Messenger users
 function showSaveOverlay(imageUrl) {
     const existing = document.getElementById('messenger-save-overlay');

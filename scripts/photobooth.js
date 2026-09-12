@@ -5,7 +5,12 @@ const moodCards = document.querySelectorAll('.mood-card');
 async function startCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user" },
+            video: { 
+                facingMode: "user",
+                // Request a 16:9 widescreen resolution to fit more people
+                width: { ideal: 1920 }, 
+                height: { ideal: 1080 } 
+            },
             audio: false
         });
         videoElement.srcObject = stream;
