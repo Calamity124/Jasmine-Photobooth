@@ -35,11 +35,10 @@ if (savedPhotos.length > 0) {
         imgDiv.style.width = '100%';
         imgDiv.style.height = 'auto'; // Remove the fixed 180px height
         
-        // Use an aspect ratio that matches your camera capture. 
-        // 3/4 or 1/1 usually works best for photobooths.
-        imgDiv.style.aspectRatio = '4/5'; 
+        // 👇 THIS IS THE FIX: '4/3' creates landscape (wide) photos perfectly matching your target
+        imgDiv.style.aspectRatio = '4/3'; 
         
-        imgDiv.style.marginBottom = '10px'; 
+        imgDiv.style.marginBottom = '12px'; // slightly increased spacing
         imgDiv.style.borderRadius = '4px';
         
         stripImagesContainer.appendChild(imgDiv);
@@ -73,15 +72,22 @@ printBtn.addEventListener('click', () => {
 downloadBtn.addEventListener('click', () => {
     downloadBtn.innerText = "Generating...";
     
-    // ❌ REMOVED the "380px" width override! 
-    // Capturing it exactly as it is keeps the text and photo proportions perfect.
+    // 👇 Lock width to 300px. This guarantees the text and padding proportions are perfect.
+    const originalWidth = photoStrip.style.width;
+    photoStrip.style.width = "300px"; 
+    photoStrip.style.maxWidth = "none";
     
     html2canvas(photoStrip, { 
-        scale: 4, // 👈 This scale makes it High-Resolution without breaking the layout
+        scale: 4, // 👈 This scale makes it High-Resolution
         useCORS: true,
         allowTaint: true,
         logging: false 
     }).then(canvas => {
+        
+        // Restore layout immediately
+        photoStrip.style.width = originalWidth;
+        photoStrip.style.maxWidth = "";
+        
         const imageUrl = canvas.toDataURL('image/jpeg', 1.0);
         
         if (isMessenger) {
@@ -98,10 +104,12 @@ downloadBtn.addEventListener('click', () => {
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
     }).catch(err => {
         console.error("Error saving image: ", err);
+        photoStrip.style.width = originalWidth; // Restore on error too
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Save';
         alert("Failed to generate image.");
     });
 });
+
 // Helper function to show a friendly save overlay with the "three dots" tip for Messenger users
 function showSaveOverlay(imageUrl) {
     const existing = document.getElementById('messenger-save-overlay');
