@@ -27,16 +27,19 @@ const savedPhotos = JSON.parse(localStorage.getItem('capturedPhotos')) || [];
 if (savedPhotos.length > 0) {
     stripImagesContainer.innerHTML = ''; 
     savedPhotos.forEach(photoSrc => {
-        // Use a div with background-image instead of an <img> tag to prevent html2canvas stretching bugs
         const imgDiv = document.createElement('div');
         imgDiv.style.backgroundImage = `url(${photoSrc})`;
         imgDiv.style.backgroundSize = 'cover';
         imgDiv.style.backgroundPosition = 'center';
-        imgDiv.style.width = '100%';
         
-        // Adjust this height to match your CSS design (e.g., 150px, 180px, etc.)
-        imgDiv.style.height = '180px'; 
-        imgDiv.style.marginBottom = '10px'; // Space between photos
+        imgDiv.style.width = '100%';
+        imgDiv.style.height = 'auto'; // Remove the fixed 180px height
+        
+        // Use an aspect ratio that matches your camera capture. 
+        // 3/4 or 1/1 usually works best for photobooths.
+        imgDiv.style.aspectRatio = '3/4'; 
+        
+        imgDiv.style.marginBottom = '10px'; 
         imgDiv.style.borderRadius = '4px';
         
         stripImagesContainer.appendChild(imgDiv);
@@ -75,9 +78,14 @@ downloadBtn.addEventListener('click', () => {
     photoStrip.style.width = "380px"; // Force desktop-like width
     photoStrip.style.maxWidth = "none";
     
-    html2canvas(photoStrip, { scale: 3, useCORS: true }).then(canvas => {
+   // Increase scale from 3 to 4 or 5 for much sharper text and images
+    html2canvas(photoStrip, { 
+        scale: 4, 
+        useCORS: true,
+        allowTaint: true,
+        logging: false 
+    }).then(canvas => {
         
-        // Immediately restore the original mobile layout
         photoStrip.style.width = originalWidth;
         photoStrip.style.maxWidth = "";
         
