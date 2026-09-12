@@ -48,6 +48,7 @@ body {
     position: relative;
     margin-bottom: 30px;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box; 
 }
 
 .photo-strip.design-film {
@@ -91,7 +92,6 @@ body {
 
 .strip-images > div {
     width: 100%;
-    aspect-ratio: 1 / 1;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
