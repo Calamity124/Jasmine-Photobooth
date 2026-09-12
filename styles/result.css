@@ -76,7 +76,7 @@ body {
 
 .strip-header {
     font-family: "Pacifico", cursive;
-    font-size: 19px;
+    font-size: 22px;
     font-weight: 400;
     color: #D46F75;
     text-align: center;
@@ -120,10 +120,11 @@ body {
     font-size: 10px;
     color: #8C706E;
 }
-#strip-caption-preview {
+#strip-caption-preview, #strip-date-preview {
     font-size: 13px; 
     font-weight: 500; 
 }
+
 
 .action-buttons {
     display: flex;
