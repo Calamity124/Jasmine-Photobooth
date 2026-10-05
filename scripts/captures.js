@@ -19,7 +19,7 @@ async function startCamera() {
         videoElement.srcObject = stream;
     } catch (error) {
         console.error("Camera access denied: ", error);
-        alert("Please allow camera access to use the photobooth.");
+        alert("Please allow camera access to use the putobooth.");
     }
 }
 

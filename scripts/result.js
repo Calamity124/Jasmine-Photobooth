@@ -105,7 +105,7 @@ downloadBtn.addEventListener('click', () => {
         } else {
             const link = document.createElement('a');
             link.href = imageUrl;
-            link.download = 'enimsaj-photobooth-strip.png';
+            link.download = 'enimsaj-putobooth-strip.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
